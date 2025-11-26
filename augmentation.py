@@ -73,16 +73,9 @@ def stationary_bootstrap(traindf: pd.DataFrame, sample_size: int,
     # Concatenate all blocks and trim to desired sample size
     bootstrap_array = np.vstack(bootstrap_data)[:sample_size]
     
-    # Create new DataFrame with appropriate index
-    # Generate new date index (could be sequential or based on original dates)
-    if isinstance(traindf.index, pd.DatetimeIndex):
-        # Create a new date range starting from the first date
-        start_date = traindf.index[0]
-        freq = pd.infer_freq(traindf.index) or 'D'  # Default to daily if can't infer
-        new_index = pd.date_range(start=start_date, periods=sample_size, freq=freq)
-    else:
-        # Create a simple integer index
-        new_index = range(sample_size)
+    # Create new DataFrame with simple sequential index
+    # Assume consecutive trading days, so just use integer index
+    new_index = range(sample_size)
     
     bootstrap_df = pd.DataFrame(
         bootstrap_array,
